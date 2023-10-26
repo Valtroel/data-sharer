@@ -8,6 +8,7 @@ data = {
     "city": "New York"
 }
 
+
 @app.route('/get_data', methods=['GET'])
 def get_data():
     return jsonify(data)
