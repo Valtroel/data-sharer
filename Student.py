@@ -1,28 +1,56 @@
-class Student:
-    def __init__(self, n_zachet, name, surname, father_name, faculty, speciality, date_end, photo, sign):
+class Person:
+    def __init__(self, nomer, fam, name, otch, n_zachet,
+                 fac2, vid_edu, kurs, d_prikaz_include,
+                 date_end, n_specializ, photo, digit_sign):
+        self.nomer = nomer
+        self.fam = fam
         self.name = name
-        self.surname = surname
-        self.father_name = father_name
-        self.faculty = faculty
-        self.speciality = speciality
-        self.date_end = date_end
-        self.photo = photo
-        self.sign = sign
+        self.otch = otch
         self.n_zachet = n_zachet
+        self.fac2 = fac2
+        self.vid_edu = vid_edu
+        self.kurs = kurs
+        self.d_prikaz_include = d_prikaz_include
+        self.date_end = date_end
+        self.n_specializ = n_specializ
+        self.photo = photo
+        self.digit_sign = digit_sign
 
     def __str__(self):
         return f'''
-        Student:
-            n_zachet: {self.n_zachet}
-            name: {self.name}
-            surname: {self.surname}
-            father_name: {self.father_name}
-            faculty: {self.faculty}
-            speciality: {self.speciality}
-            date_end: {self.date_end}
-            photo: {self.photo}
-            sign: {self.sign}
+        Person(
+        nomer={self.nomer},
+        fam={self.fam},
+        name={self.name},
+        otch={self.otch},
+        n_zachet={self.n_zachet},
+        fac2={self.fac2},
+        vid_edu={self.vid_edu},
+        kurs={self.kurs},
+        d_prikaz_include={self.d_prikaz_include},
+        date_end={self.date_end},
+        n_specializ={self.n_specializ},
+        photo={self.photo},
+        digit_sign={self.digit_sign}
+        )
         '''
 
+    def __json__(self):
+        return {
+            "nomer": self.nomer,
+            "fam": self.fam,
+            "name": self.name,
+            "otch": self.otch,
+            "n_zachet": self.n_zachet,
+            "fac2": self.fac2,
+            "vid_edu": self.vid_edu,
+            "kurs": self.kurs,
+            "d_prikaz_include": self.d_prikaz_include,
+            "date_end": self.date_end,
+            "n_specializ": self.n_specializ,
+            "photo": self.photo,
+            "digit_sign": self.digit_sign,
+        }
+
     def get_fio(self):
-        return f"{self.surname} {self.name} {self.father_name}"
+        return f"{self.fam} {self.name} {self.otch}"
