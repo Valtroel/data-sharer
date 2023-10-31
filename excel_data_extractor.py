@@ -5,7 +5,7 @@ import numpy as np
 import FacultyEnum as fac
 import ExcelFileData as ex_f
 
-# Объяснение переменной `n_zachet_column`
+# Колонка из файла excel с нужными данными
 n_zachet_column = 'N_ZACHET'
 
 
