@@ -34,7 +34,7 @@ def __extract_sheets_data():
                 sheets_data.pop(file_key)
                 sheets_data[file_key] = ex_f.ExcelFileData(path=excel_file_path, data=temp_data + n_zachet_values)
             else:
-                sheets_data[file_key] = ex_f.ExcelFileData(path = excel_file_path, data = n_zachet_values)
+                sheets_data[file_key] = ex_f.ExcelFileData(path=excel_file_path, data=n_zachet_values)
             log.debug(f"[__extract_sheets_data] Extracted from {sheet_name} sheet data: {sheets_data[file_key]}")
     return sheets_data
 
@@ -63,4 +63,3 @@ def get_n_zachet_data_from_excel_files():
             log.debug(f"[get_n_zachet_data] Обработано значений: {elements_count}")
         n_zachet_excel_data[key] = row_data.data
     return n_zachet_excel_data
-

@@ -1,22 +1,18 @@
 import json
-from json import dumps
-import datetime
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 import people_repository as pr
 
 app = Flask(__name__)
 
 
-def dumps(obj, default=lambda obj: obj.__dict__):
-    if isinstance(obj, datetime.datetime):
-        return obj.isoformat()
-    return json.dumps(obj, default=default)
-
-
-@app.route('/get_data', methods=['GET'])
+@app.route('/get-data', methods=['GET'])
 def get_data():
-    return dumps(pr.find_people_by_n_zachet_data())
+    people = pr.find_people_by_n_zachet_data()
+    json_response = json.dumps([ob.__dict__ for ob in people])
+    response = make_response(json_response)
+    response.content_type = "application/json"
+    return response
 
 
 if __name__ == '__main__':

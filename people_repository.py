@@ -3,6 +3,7 @@ import fdb
 import excel_data_extractor as ede
 import logging as log
 import Student as st
+import student_mapper as mapper
 
 con = fdb.connect(
     dsn="172.16.1.30/3050:dekanat",
@@ -29,7 +30,7 @@ def __prepare_queries():
         sql_stud_queries_with_faculties[fac] = f'''
         select people.nomer, people.fam, people.name, people.otch, people.n_zachet,
                     faculty.fac2, vid_edu.vid_edu, people.kurs, people.d_prikaz_include, 
-                    people.date_end, people.n_specializ, people.photo, people.digit_sign 
+                    people.date_end, people.n_specializ, people.digit_sign 
                  from people, faculty, vid_edu, specializ  
                  where people.status_people = 1  
                     and faculty.n_fac = people.n_fac 
@@ -55,28 +56,6 @@ def __prepare_queries():
     return sql_stud_queries_with_faculties
 
 
-def __unpack_sql_query_results_into_student_entities(sql_query_results):
-    students = []
-    for row in sql_query_results:
-        student = st.Person(
-            nomer=row[0],
-            fam=row[1],
-            name=row[2],
-            otch=row[3],
-            n_zachet=row[4],
-            fac2=row[5],
-            vid_edu=row[6],
-            kurs=row[7],
-            d_prikaz_include=row[8],
-            date_end=row[9],
-            n_specializ=row[10],
-            photo=row[11],
-            digit_sign=row[12],
-        )
-        students.append(student)
-    return students
-
-
 def find_people_by_n_zachet_data():
     people_separated_with_fac = []
     cur = con.cursor()
@@ -84,6 +63,7 @@ def find_people_by_n_zachet_data():
         log.debug(f"[people_repository] Starting execute SQL query: \n {query}")
         cur.execute(query)
         sql_query_results = cur.fetchall()
-        people_separated_with_fac.append(__unpack_sql_query_results_into_student_entities(sql_query_results))
+        people_separated_with_fac = (people_separated_with_fac
+                                     + mapper.unpack_sql_query_results_into_student_entities(sql_query_results))
     cur.close()
     return people_separated_with_fac
