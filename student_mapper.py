@@ -20,7 +20,7 @@ def unpack_sql_query_results_into_student_entities(sql_query_results):
             date_end=row[9],
             n_specializ=row[10],
             photo=None,
-            digit_sign=row[11],
+            digit_sign=row[11]
         )
         set_student_photo(student)
         students.append(student)
@@ -30,7 +30,7 @@ def unpack_sql_query_results_into_student_entities(sql_query_results):
 def set_student_photo(person):
     try:
         photo_path = person.get_fio() + '.JPG'
-        photo = PIL.Image.open(f"C:\\Users\\wwlo\\zachetker\\data-sharer\\data\\photos\\{photo_path}")
+        photo = PIL.Image.open(f"C:\\Users\\kulevets_v\\za4etcker\\data-sharer\\data\\photos\\{photo_path}")
         photo_bytes = photo.tobytes()
         person.photo = photo_bytes
     except UnidentifiedImageError:

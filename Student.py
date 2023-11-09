@@ -1,3 +1,7 @@
+import json
+import base64
+
+
 class Person:
     def __init__(self, nomer, fam, name, otch, n_zachet,
                  fac2, vid_edu, kurs, d_prikaz_include,
@@ -36,6 +40,13 @@ class Person:
         '''
 
     def __json__(self):
+        photo = ''
+        if self.photo:
+            photo = base64.b64encode(self.photo).decode('utf-8')
+
+        digit_sign = ''
+        if self.digit_sign:
+            digit_sign = base64.b64encode(self.digit_sign).decode('utf-8')
         return {
             "nomer": self.nomer,
             "fam": self.fam,
@@ -45,11 +56,11 @@ class Person:
             "fac2": self.fac2,
             "vid_edu": self.vid_edu,
             "kurs": self.kurs,
-            "d_prikaz_include": self.d_prikaz_include.strftime('%F'),
-            "date_end": self.date_end.strftime('%F'),
+            "d_prikaz_include": self.d_prikaz_include.strftime("%Y-%m-%d"),
+            "date_end": self.date_end.strftime("%Y-%m-%d"),
             "n_specializ": self.n_specializ,
-            "photo": self.photo,
-            "digit_sign": self.digit_sign,
+            "photo": json.dumps(photo),
+            "digit_sign": json.dumps(digit_sign)
         }
 
     def get_fio(self):

@@ -3,7 +3,7 @@ import logging as log
 from pathlib import Path
 from datetime import datetime
 
-directories_to_search = ['C:\\Users\\wwlo\\zachetker\\data-sharer\\data\\1']
+directories_to_search = ['C:\\Users\\kulevets_v\\za4etcker\\data-sharer\\data\\1']
 
 
 def search_for_excel_files_paths():
