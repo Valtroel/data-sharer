@@ -1,5 +1,6 @@
 import json
 import base64
+import datetime
 
 
 class Person:
@@ -56,8 +57,8 @@ class Person:
             "fac2": self.fac2,
             "vid_edu": self.vid_edu,
             "kurs": self.kurs,
-            "d_prikaz_include": self.d_prikaz_include.strftime("%Y-%m-%d"),
-            "date_end": self.date_end.strftime("%Y-%m-%d"),
+            "d_prikaz_include": datetime.datetime.strptime(self.d_prikaz_include, "%Y-%m-%d %H:%M:%S").date(),
+            "date_end": datetime.datetime.strptime(self.date_end, "%Y-%m-%d %H:%M:%S").date(),
             "n_specializ": self.n_specializ,
             "photo": json.dumps(photo),
             "digit_sign": json.dumps(digit_sign)

@@ -2,7 +2,6 @@ import math
 import fdb
 import excel_data_extractor as ede
 import logging as log
-import Student as st
 import student_mapper as mapper
 
 con = fdb.connect(
@@ -19,9 +18,14 @@ log.basicConfig(
     handlers=[log.FileHandler('logs/logs.log')]
 )
 
+sql_spec_query = '''
+        SELECT DISTINCT people.n_specializ
+        FROM people;
+'''
 
-def __prepare_queries():
-    excel_n_zachet_data = ede.get_n_zachet_data_from_excel_files()
+
+def __prepare_queries(excel_files_paths=None):
+    excel_n_zachet_data = ede.get_n_zachet_data_from_excel_files(excel_files_paths)
     sql_stud_queries_with_faculties = {}
 
     for fac, fac_n_zachet_data in excel_n_zachet_data.items():
@@ -30,7 +34,7 @@ def __prepare_queries():
         sql_stud_queries_with_faculties[fac] = f'''
         select people.nomer, people.fam, people.name, people.otch, people.n_zachet,
                     faculty.fac2, vid_edu.vid_edu, people.kurs, people.d_prikaz_include, 
-                    people.date_end, people.n_specializ, people.digit_sign 
+                    people.date_end, people.n_specializ, people.photo, people.digit_sign 
                  from people, faculty, vid_edu, specializ  
                  where people.status_people = 1  
                     and faculty.n_fac = people.n_fac 
@@ -56,10 +60,10 @@ def __prepare_queries():
     return sql_stud_queries_with_faculties
 
 
-def find_people_by_n_zachet_data():
+def find_people_by_n_zachet_data(excel_files_paths=None):
     people_separated_with_fac = []
     cur = con.cursor()
-    for query in __prepare_queries().values():
+    for query in __prepare_queries(excel_files_paths).values():
         log.debug(f"[people_repository] Starting execute SQL query: \n {query}")
         cur.execute(query)
         sql_query_results = cur.fetchall()
@@ -67,3 +71,11 @@ def find_people_by_n_zachet_data():
                                      + mapper.unpack_sql_query_results_into_student_entities(sql_query_results))
     cur.close()
     return people_separated_with_fac
+
+
+def find_all_n_specializ():
+    cur = con.cursor()
+    cur.execute(sql_spec_query)
+    n_specializ_values = cur.fetchall()
+    cur.close()
+    return n_specializ_values

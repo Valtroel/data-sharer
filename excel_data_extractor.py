@@ -9,18 +9,20 @@ import ExcelFileData as ex_f
 n_zachet_column = 'N_ZACHET'
 
 
-def __get_excel_files():
+def __get_excel_files(excel_files_paths=None):
+    if excel_files_paths is None:
+        excel_files_paths = ef.search_for_excel_files_paths()
     log.debug("[__get_excel_files] Получение файлов Excel для обработки")
-    excel_files = ef.search_for_excel_files_paths()
+    excel_files = excel_files_paths
     log.debug(f"[__get_excel_files] Количество обработанных файлов: {len(excel_files)}")
     log.debug(f"[__get_excel_files] Окончание обработки файлов")
     return excel_files
 
 
-def __extract_sheets_data():
+def __extract_sheets_data(excel_files_paths=None):
     log.debug("[__extract_sheets_data] Start extracting sheets' data")
     sheets_data = {}
-    excel_files = __get_excel_files()
+    excel_files = __get_excel_files(excel_files_paths)
     for excel_file_path in excel_files:
         file_key = fac.get_faculty_from_path(excel_file_path)
         excel_file = pd.ExcelFile(excel_file_path)
@@ -36,15 +38,16 @@ def __extract_sheets_data():
             else:
                 sheets_data[file_key] = ex_f.ExcelFileData(path=excel_file_path, data=n_zachet_values)
             log.debug(f"[__extract_sheets_data] Extracted from {sheet_name} sheet data: {sheets_data[file_key]}")
+        excel_file.close()
     return sheets_data
 
 
-def get_n_zachet_data_from_excel_files():
+def get_n_zachet_data_from_excel_files(excel_files_paths=None):
     elements_count = 0
     log.debug("[get_n_zachet_data] Начало получения данных из столбца `Номер зачета` из файлов Excel")
     n_zachet_excel_data = {}
     nan_values = {}
-    sheets_data = __extract_sheets_data()
+    sheets_data = __extract_sheets_data(excel_files_paths)
     for key, row_elements in sheets_data.items():
         row_data = row_elements
         for index, row in enumerate(row_data.data):
